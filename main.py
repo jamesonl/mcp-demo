@@ -23,7 +23,7 @@ def _get_openai_client() -> "OpenAI":
     return OpenAI(api_key=api_key)
 
 
-@mcp.tool
+@mcp.tool()
 def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["formal", "informal", "friendly", "professional", "humorous", "serious"] = "friendly") -> str:
     """Generate a structured greeting prompt and request a GPT-5 refinement suggestion."""
     prompt = PromptStructure(
