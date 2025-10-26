@@ -81,8 +81,8 @@ def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["
         f"{refined_prompt.strip()}"
     )
 
-test = build_better_meta_prompt(name="Alice", prompt_instruction="Create a warm and engaging greeting message.", tone="friendly")
-print(test)
+# test = build_better_meta_prompt(name="Alice", prompt_instruction="Create a warm and engaging greeting message.", tone="friendly")
+# print(test)
 
 
 if __name__ == "__main__":
