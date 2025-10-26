@@ -12,10 +12,6 @@ class PromptStructure(BaseModel):
         ...,
         description="Clear, specific instruction describing what the model should do.",
     )
-    context: Optional[str] = Field(
-        default=None,
-        description="Supporting details that provide the model with necessary background.",
-    )
     tone: Literal["formal", "informal", "friendly", "professional", "humorous", "serious"] = Field(
         default="professional",
         description="Desired tone of the response.",

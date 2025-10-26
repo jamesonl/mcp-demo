@@ -24,11 +24,11 @@ def _get_openai_client() -> "OpenAI":
 
 
 @mcp.tool
-def build_greeting_prompt(name: str, tone: Literal["formal", "informal", "friendly", "professional", "humorous", "serious"] = "friendly") -> str:
+def build_greeting_prompt(name: str, prompt_instruction: str, tone: Literal["formal", "informal", "friendly", "professional", "humorous", "serious"] = "friendly") -> str:
     """Generate a structured greeting prompt and request a GPT-5 refinement suggestion."""
     prompt = PromptStructure(
-        objective="Generate a concise greeting for the provided person.",
-        context=f"The person's name is {name}. Respond with a single sentence that greets them directly.",
+        objective=prompt_instruction,
+        # context=f"The person's name is {name}. Respond with a single sentence that greets them directly.",
         tone=tone,
         refinement_notes=[
             "Start with this structure and adjust the context or tone based on the model's response.",
@@ -59,7 +59,7 @@ def build_greeting_prompt(name: str, tone: Literal["formal", "informal", "friend
                     {
                         "type": "text",
                         "text": (
-                            "Rewrite the following greeting prompt to maximize clarity, and propose any additional adjustments "
+                            "Rewrite the following  prompt to maximize clarity, and propose any additional adjustments "
                             "to context or tone if they improve the result. Return the improved prompt text and a short rationale.\n\n"
                             f"{structured_prompt}"
                         ),
@@ -80,11 +80,6 @@ def build_greeting_prompt(name: str, tone: Literal["formal", "informal", "friend
         "GPT-5 Proposal:\n"
         f"{refined_prompt.strip()}"
     )
-
-
-# @mcp.tool
-# def greet(name: str) -> str:
-#     return f"Hello, {name}!"
 
 
 if __name__ == "__main__":
