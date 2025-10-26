@@ -24,8 +24,6 @@ class PromptStructure(BaseModel):
     def render(self) -> str:
         """Compose the prompt text that can be supplied to a language model."""
         segments: List[str] = [f"Objective: {self.objective}"]
-        if self.context:
-            segments.append(f"Context: {self.context}")
         segments.append(f"Tone: {self.tone}")
         if self.refinement_notes:
             segments.append("Refinement Notes:")

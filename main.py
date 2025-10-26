@@ -1,6 +1,6 @@
 import os
 from typing import Literal, Optional
-
+from dotenv import load_dotenv
 try:
     from openai import OpenAI
 except ImportError:  # pragma: no cover - handled at runtime
@@ -12,10 +12,11 @@ from prompt_structure import PromptStructure
 
 mcp = FastMCP("My MCP Server")
 
-
+load_dotenv()
 def _get_openai_client() -> "OpenAI":
     """Instantiate an OpenAI client using the API key from the environment."""
     api_key = os.getenv("APIKEY")
+    # print(api_key)
     if not api_key:
         raise RuntimeError("Environment variable APIKEY must be set with a valid OpenAI API key.")
     if OpenAI is None:
@@ -28,7 +29,6 @@ def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["
     """Generate a structured greeting prompt and request a GPT-5 refinement suggestion."""
     prompt = PromptStructure(
         objective=prompt_instruction,
-        # context=f"The person's name is {name}. Respond with a single sentence that greets them directly.",
         tone=tone,
         refinement_notes=[
             "Start with this structure and adjust the context or tone based on the model's response.",
@@ -45,7 +45,7 @@ def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["
                 "role": "system",
                 "content": [
                     {
-                        "type": "text",
+                        "type": "input_text",
                         "text": (
                             "You are an expert prompt engineer. "
                             "You rewrite prompt drafts for clarity, specificity, and tone alignment."
@@ -57,9 +57,9 @@ def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["
                 "role": "user",
                 "content": [
                     {
-                        "type": "text",
+                        "type": "input_text",
                         "text": (
-                            "Rewrite the following  prompt to maximize clarity, and propose any additional adjustments "
+                            "Rewrite the following prompt to maximize clarity, and propose any additional adjustments "
                             "to context or tone if they improve the result. Return the improved prompt text and a short rationale.\n\n"
                             f"{structured_prompt}"
                         ),
@@ -80,6 +80,9 @@ def build_better_meta_prompt(name: str, prompt_instruction: str, tone: Literal["
         "GPT-5 Proposal:\n"
         f"{refined_prompt.strip()}"
     )
+
+test = build_better_meta_prompt(name="Alice", prompt_instruction="Create a warm and engaging greeting message.", tone="friendly")
+print(test)
 
 
 if __name__ == "__main__":
